@@ -27,8 +27,8 @@ node {
       '''
     }
     // get publish settings
-    def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
-    def ftpProfile = getFtpPublishProfile(pubProfilesJson)
+    def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles --resource-group $resourceGroup --name $webAppName", returnStdout: true
+    def ftpProfile = getFtpPublishProfile pubProfilesJson
     // upload package
     sh "curl -T target/calculator-1.0.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
     // log out
